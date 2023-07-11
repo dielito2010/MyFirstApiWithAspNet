@@ -3,12 +3,12 @@ using MyFirstApiWithAspNet.Domain.Products;
 
 namespace MyFirstApiWithAspNet.Infra.Data;
 
-public class AplicationDbContext : DbContext
+public class ApplicationDbContext : DbContext
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
 
-    public AplicationDbContext(DbContextOptions<AplicationDbContext> options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
