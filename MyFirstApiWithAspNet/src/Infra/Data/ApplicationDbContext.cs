@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Flunt.Notifications;
+using Microsoft.EntityFrameworkCore;
 using MyFirstApiWithAspNet.Domain.Products;
 
 namespace MyFirstApiWithAspNet.Infra.Data;
@@ -12,6 +13,8 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.Ignore<Notification>();
+
         builder.Entity<Product>()
             .Property(p => p.Name).IsRequired();
         builder.Entity<Product>()

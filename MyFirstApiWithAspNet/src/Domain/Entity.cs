@@ -1,6 +1,8 @@
-﻿namespace MyFirstApiWithAspNet.Domain;
+﻿using Flunt.Notifications;
 
-public abstract class Entity
+namespace MyFirstApiWithAspNet.Domain;
+
+public abstract class Entity : Notifiable<Notification>
 {
     public Entity()
     {
