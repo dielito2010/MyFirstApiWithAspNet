@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using MyFirstApiWithAspNet.Domain.Products;
 using MyFirstApiWithAspNet.Endpoints.Categories;
 using MyFirstApiWithAspNet.Endpoints.Employees;
 using MyFirstApiWithAspNet.Infra.Data;
@@ -28,6 +27,6 @@ app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handle)
 app.MapMethods(CategoryGetAll.Template, CategoryGetAll.Methods, CategoryGetAll.Handle);
 app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
-
+app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
 
 app.Run();
