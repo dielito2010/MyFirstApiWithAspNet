@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MyFirstApiWithAspNet.Endpoints.Categories;
@@ -16,7 +17,15 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 builder.Services.AddScoped<QueryAllUsersWithClaimName>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(option =>
+{
+    option.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+    option.AddPolicy("EmployeePolicy", p =>
+        p.RequireAuthenticatedUser().RequireClaim("EmployeeCode"));
+});
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -29,8 +38,9 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.Zero,
         ValidIssuer = builder.Configuration["JwtBearerTokenSettings:Issuer"],
-        ValidAudience = builder.Configuration["JwtBearerTokenSettings:Audiance"],
+        ValidAudience = builder.Configuration["JwtBearerTokenSettings:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["JwtBearerTokenSettings:SecretKey"]))
     };
