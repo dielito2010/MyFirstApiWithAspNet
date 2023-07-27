@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using MyFirstApiWithAspNet.Endpoints.Categories;
-using MyFirstApiWithAspNet.Endpoints.Employees;
+using MyFirstApiWithAspNet;
 using MyFirstApiWithAspNet.Endpoints.Security;
-using MyFirstApiWithAspNet.Infra.Data;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -66,5 +62,8 @@ app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
+
+app.UseExceptionHandler("/error");
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();

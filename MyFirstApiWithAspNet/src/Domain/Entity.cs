@@ -1,6 +1,4 @@
-﻿using Flunt.Notifications;
-
-namespace MyFirstApiWithAspNet.Domain;
+﻿namespace MyFirstApiWithAspNet.Domain;
 
 public abstract class Entity : Notifiable<Notification>
 {

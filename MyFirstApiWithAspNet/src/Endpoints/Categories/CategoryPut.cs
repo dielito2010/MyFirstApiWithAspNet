@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyFirstApiWithAspNet.Infra.Data;
-using System.Security.Claims;
-
-namespace MyFirstApiWithAspNet.Endpoints.Categories;
+﻿namespace MyFirstApiWithAspNet.Endpoints.Categories;
 
 public class CategoryPut
 {
@@ -11,13 +7,16 @@ public class CategoryPut
     public static Delegate Handle => Action;
 
     public static IResult Action(
-        [FromRoute] Guid id, HttpContext http, CategoryRequest categoryRequest, ApplicationDbContext context)
+       [FromRoute] Guid id, HttpContext http, CategoryRequest categoryRequest, ApplicationDbContext context)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var category = context.Categories.Where(c => c.Id == id).FirstOrDefault();
 
         if (category == null)
-            return Results.NotFound();
+            return Results.NotFound(new Dictionary<string, string[]>
+        {
+            { "Id", new[] { "Categoria não encontrada no banco de dados." } }
+        });
 
         category.EditInfo(categoryRequest.Name, categoryRequest.Active, userId);
 

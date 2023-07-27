@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,10 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Endpoints\NovaPasta\**" />
-    <Content Remove="Endpoints\NovaPasta\**" />
-    <EmbeddedResource Remove="Endpoints\NovaPasta\**" />
-    <None Remove="Endpoints\NovaPasta\**" />
+    
+    <using Include = "System.Security.Claims"/>
+    <Using Include = "Flunt.Notifications"/>
+    <using Include = "Microsoft.EntityFrameworkCore"/>
+    <using Include = "Microsoft.AspNetCore.Mvc"/>
+    <using Include = "Microsoft.AspNetCore.Identity"/>
+    <using Include = "Microsoft.AspNetCore.Authorization"/>
+    <using Include = "Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
+    
+    <using Include = "MyFirstApiWithAspNet.Domain.Products"/>    
+    <using Include = "MyFirstApiWithAspNet.Endpoints.Categories"/>
+    <using Include = "MyFirstApiWithAspNet.Endpoints.Employees"/>
+    <using Include = "MyFirstApiWithAspNet.Infra.Data"/>
+    
   </ItemGroup>
 
   <ItemGroup>

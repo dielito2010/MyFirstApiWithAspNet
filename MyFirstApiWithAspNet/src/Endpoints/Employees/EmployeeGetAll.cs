@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using MyFirstApiWithAspNet.Infra.Data;
-
-namespace MyFirstApiWithAspNet.Endpoints.Employees;
+﻿namespace MyFirstApiWithAspNet.Endpoints.Employees;
 
 public class EmployeeGetAll
 {
@@ -11,7 +8,7 @@ public class EmployeeGetAll
 
     [Authorize(Policy = "EmployeePolicy")]
 
-    public static IResult Action(int? page, int? rows, QueryAllUsersWithClaimName query)
+    public static async Task<IResult> Action(int? page, int? rows, QueryAllUsersWithClaimName query)
     {
         var errors = ValidateInputPageRows.Validate(page, rows);
 
@@ -20,6 +17,8 @@ public class EmployeeGetAll
             return Results.BadRequest(errors);
             //Console.WriteLine(errors);
         }
-        return Results.Ok(query.Execute(page.Value, rows.Value));
+
+        var result = await query.Execute(page.Value, rows.Value);
+        return Results.Ok(result);
     }
 }

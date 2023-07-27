@@ -1,10 +1,4 @@
-﻿using Flunt.Notifications;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using MyFirstApiWithAspNet.Domain.Products;
-
-namespace MyFirstApiWithAspNet.Infra.Data;
+﻿namespace MyFirstApiWithAspNet.Infra.Data;
 
 public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {
@@ -22,11 +16,11 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
         builder.Entity<Product>()
             .Property(p => p.Name).IsRequired();
         builder.Entity<Product>()
-            .Property(p => p.Description).HasMaxLength(255);  
+            .Property(p => p.Description).HasMaxLength(255);
 
         builder.Entity<Category>()
-            .Property(c => c.Name).IsRequired();    
-        
+            .Property(c => c.Name).IsRequired();
+
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configuration)

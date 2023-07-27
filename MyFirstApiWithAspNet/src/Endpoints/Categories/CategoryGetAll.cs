@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using MyFirstApiWithAspNet.Infra.Data;
-
-namespace MyFirstApiWithAspNet.Endpoints.Categories;
+﻿namespace MyFirstApiWithAspNet.Endpoints.Categories;
 
 public class CategoryGetAll
 {
@@ -13,8 +10,10 @@ public class CategoryGetAll
     public static IResult Action(ApplicationDbContext context)
     {
         var categories = context.Categories.ToList();
-        var response = categories.Select(c => new CategoryResponse { Id = c.Id, Name = c.Name, Active = c.Active });
+        var response = categories.Select(c => new CategoryResponse(c.Id, c.Name, c.Active));
 
         return Results.Ok(response);
     }
 }
+
+

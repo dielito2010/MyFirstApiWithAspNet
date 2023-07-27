@@ -1,13 +1,11 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using MyFirstApiWithAspNet.Endpoints;
-using MyFirstApiWithAspNet.Endpoints.Employees;
 
 namespace MyFirstApiWithAspNet.Infra.Data;
 
 public class QueryAllUsersWithClaimName
 {
-    public IEnumerable<EmployeeResponse> Execute(int page, int rows)
+    public async Task<IEnumerable<EmployeeResponse>> Execute(int page, int rows)
     {
         var connectionString = Environment.GetEnvironmentVariable("IWantDb");
 
@@ -18,16 +16,22 @@ public class QueryAllUsersWithClaimName
         }
 
         var query =
-            @"select Email, ClaimValue as Name
-                from AspNetUsers u inner join AspNetUserClaims c
-                on u.id = c.UserId and claimtype = 'Name'
-                order by name
-                OFFSET (@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
+        @"select Email, ClaimValue as Name
+            from AspNetUsers u inner join AspNetUserClaims c
+            on u.id = c.UserId and claimtype = 'Name'
+            order by name
+            OFFSET (@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 
-        var db = new SqlConnection(connectionString);
-        return db.Query<EmployeeResponse>(
-            query,
-            new { page, rows }
-        );
+        using (var db = new SqlConnection(connectionString))
+        {
+            await db.OpenAsync();
+
+            var result = await db.QueryAsync<EmployeeResponse>(
+                query,
+                new { page, rows }
+            );
+
+            return result;
+        }
     }
 }

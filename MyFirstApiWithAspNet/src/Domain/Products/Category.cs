@@ -15,7 +15,7 @@ public class Category : Entity
         EditedBy = editedBy;
         CreatedOn = DateTime.Now;
         EditedOn = DateTime.Now;
-        
+
         Validate();
     }
 
