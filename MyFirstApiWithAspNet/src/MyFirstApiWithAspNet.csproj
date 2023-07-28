@@ -8,18 +8,18 @@
 
   <ItemGroup>
     
-    <using Include = "System.Security.Claims"/>
-    <Using Include = "Flunt.Notifications"/>
-    <using Include = "Microsoft.EntityFrameworkCore"/>
-    <using Include = "Microsoft.AspNetCore.Mvc"/>
-    <using Include = "Microsoft.AspNetCore.Identity"/>
-    <using Include = "Microsoft.AspNetCore.Authorization"/>
-    <using Include = "Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
+    <using Include="System.Security.Claims" />
+    <Using Include="Flunt.Notifications" />
+    <using Include="Microsoft.EntityFrameworkCore" />
+    <using Include="Microsoft.AspNetCore.Mvc" />
+    <using Include="Microsoft.AspNetCore.Identity" />
+    <using Include="Microsoft.AspNetCore.Authorization" />
+    <using Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     
-    <using Include = "MyFirstApiWithAspNet.Domain.Products"/>    
-    <using Include = "MyFirstApiWithAspNet.Endpoints.Categories"/>
-    <using Include = "MyFirstApiWithAspNet.Endpoints.Employees"/>
-    <using Include = "MyFirstApiWithAspNet.Infra.Data"/>
+    <using Include="MyFirstApiWithAspNet.Domain.Products" />    
+    <using Include="MyFirstApiWithAspNet.Endpoints.Categories" />
+    <using Include="MyFirstApiWithAspNet.Endpoints.Employees" />
+    <using Include="MyFirstApiWithAspNet.Infra.Data" />
     
   </ItemGroup>
 
@@ -34,6 +34,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 

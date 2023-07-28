@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 
-namespace MyFirstApiWithAspNet;
+namespace MyFirstApiWithAspNet.Endpoints;
 
 public class ErrorHandlingMiddleware
 {

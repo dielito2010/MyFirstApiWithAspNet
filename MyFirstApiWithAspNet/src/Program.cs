@@ -1,13 +1,27 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using MyFirstApiWithAspNet;
+using MyFirstApiWithAspNet.Endpoints;
 using MyFirstApiWithAspNet.Endpoints.Security;
 using System.Text;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configuração da conexão com o banco de dados usando a variável de ambiente
 var connectionString = Environment.GetEnvironmentVariable("IWantDb");
-builder.Services.AddSqlServer<ApplicationDbContext>(connectionString);
+
+// Configuração do Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.MSSqlServer(connectionString: connectionString, tableName: "Logs", autoCreateSqlTable: true)
+    .CreateLogger();
+
+builder.WebHost.UseSerilog();
+
+
 //builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionString:IWantDb"]);
+builder.Services.AddSqlServer<ApplicationDbContext>(connectionString);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<QueryAllUsersWithClaimName>();
@@ -44,17 +58,21 @@ builder.Services.AddAuthentication(x =>
 
 
 var app = builder.Build();
-app.UseAuthentication();
-app.UseAuthorization();
 
+// Tratamento de exceções padrão
+app.UseExceptionHandler("/error");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Middleware personalizado de tratamento de exceções
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
+// Redirecionamento para HTTPS
 app.UseHttpsRedirection();
+
+// Autenticação
+app.UseAuthentication();
+
+// Autorização
+app.UseAuthorization();
 
 app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handle);
 app.MapMethods(CategoryGetAll.Template, CategoryGetAll.Methods, CategoryGetAll.Handle);
@@ -62,8 +80,5 @@ app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
-
-app.UseExceptionHandler("/error");
-app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();
