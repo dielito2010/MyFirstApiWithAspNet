@@ -4,6 +4,7 @@ using MyFirstApiWithAspNet.Endpoints;
 using MyFirstApiWithAspNet.Endpoints.Security;
 using System.Text;
 using Serilog;
+using MyFirstApiWithAspNet.Endpoints.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,26 +59,21 @@ builder.Services.AddAuthentication(x =>
 
 
 var app = builder.Build();
-
 // Tratamento de exceções padrão
 app.UseExceptionHandler("/error");
-
 // Middleware personalizado de tratamento de exceções
 app.UseMiddleware<ErrorHandlingMiddleware>();
-
-// Redirecionamento para HTTPS
 app.UseHttpsRedirection();
-
-// Autenticação
 app.UseAuthentication();
-
-// Autorização
 app.UseAuthorization();
 
+app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handle);
+app.MapMethods(ProductGet.Template, ProductGet.Methods, ProductGet.Handle);
 app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handle);
 app.MapMethods(CategoryGetAll.Template, CategoryGetAll.Methods, CategoryGetAll.Handle);
 app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
+app.MapMethods(ProductPost.Template, ProductPost.Methods, ProductPost.Handle);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
 
