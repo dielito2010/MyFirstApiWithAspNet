@@ -37,7 +37,7 @@ public class Product : Entity
             .IsNotNullOrEmpty(EditedBy, "EditedBy")
             .IsGreaterOrEqualsThan(Name, 3, "Name")
             .IsGreaterOrEqualsThan(Description, 3, "Description")
-            .IsNotNull(Category, "Category");
+            .IsNotNull(Category, "Category", "Category is not found or null");
         AddNotifications(contract);
     }
 }

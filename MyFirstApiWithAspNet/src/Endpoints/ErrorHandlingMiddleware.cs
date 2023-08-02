@@ -62,6 +62,11 @@ public class ErrorHandlingMiddleware
         {
             return HandleCustomException(context, exception, StatusCodes.Status429TooManyRequests, "429");
         }
+        else if (exception is BadHttpRequestException)
+        {
+            return HandleCustomException(context, exception, StatusCodes.Status500InternalServerError,
+                "Error to convert data to other type. See all the information sent");
+        }
 
         return HandleCustomException(context, exception, StatusCodes.Status500InternalServerError, "500");
     }
