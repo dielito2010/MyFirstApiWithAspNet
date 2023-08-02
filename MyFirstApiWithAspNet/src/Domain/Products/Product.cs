@@ -12,16 +12,15 @@ public class Product : Entity
     public decimal Price { get; private set; }
     public bool Active { get; private set; } = true;
 
-    private Product(string name) { }
+    private Product() { }
 
-    public Product(string name, Category category, string description, bool hasStock, string createdBy, decimal price)
+    public Product(string name, Category category, string description, bool hasStock, decimal price, string createdBy)
     {
         Name = name;
         Category = category;
         Description = description;
         HasStock = hasStock;
         Price = price;
-
         CreatedBy = createdBy;
         EditedBy = createdBy;
         CreatedOn = DateTime.Now;
@@ -30,16 +29,6 @@ public class Product : Entity
         Validate();
         
     }
-
-    public Product(string name, Category? category, string description, bool hasStock, decimal price, string userId)
-    {
-        Name = name;
-        Category = category;
-        Description = description;
-        HasStock = hasStock;
-        Price = price;
-    }
-
     private void Validate()
     {
         var contract = new Contract<Product>()
@@ -48,7 +37,7 @@ public class Product : Entity
             .IsNotNullOrEmpty(CreatedBy, "CreatedBy")
             .IsNotNullOrEmpty(EditedBy, "EditedBy")
             .IsGreaterOrEqualsThan(Name, 3, "Name")
-            .IsGreaterOrEqualsThan(Price, 0.01, "Price")
+            .IsGreaterOrEqualsThan(Price, 1, "Price")
             .IsGreaterOrEqualsThan(Description, 3, "Description")
             .IsNotNull(Category, "Category", "Category is not found or null");
           AddNotifications(contract);

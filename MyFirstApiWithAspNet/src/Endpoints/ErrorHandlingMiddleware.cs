@@ -38,6 +38,11 @@ public class ErrorHandlingMiddleware
                 var foreignKeyViolationException = new ForeignKeyViolationException("Foreign key constraint violation");
                 return HandleCustomException(context, foreignKeyViolationException, StatusCodes.Status409Conflict, "409");
             }
+            else if (sqlException.Number == 515)
+            {
+                var dataBaseError = new DataBaseError("Cannot insert the value NULL");
+                return HandleCustomException(context, dataBaseError, StatusCodes.Status500InternalServerError, "Cannot insert the value NULL");
+            }
             else
             {
                 var databaseError = new DataBaseError("Database error");

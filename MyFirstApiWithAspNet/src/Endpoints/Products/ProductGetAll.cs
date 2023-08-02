@@ -1,4 +1,7 @@
-﻿namespace MyFirstApiWithAspNet.Endpoints.Products;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+
+namespace MyFirstApiWithAspNet.Endpoints.Products;
 
 public class ProductGetAll
 {
@@ -13,7 +16,7 @@ public class ProductGetAll
         .OrderBy(p => p.Name)
         .ToListAsync();
 
-        var results = products.Select(p => new ProductResponse(p.Name, p.Category.Name, p.Description, p.HasStock, p.Active));
+        var results = products.Select(p => new ProductResponse(p.Name, p.Category.Name, p.Description, p.HasStock, p.Price, p.Active));
 
         return Results.Ok(results);
     }

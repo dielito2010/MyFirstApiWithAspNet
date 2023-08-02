@@ -19,7 +19,7 @@ public class ProductGet
                 return Results.NotFound("Product not found");
             }
 
-            var result = new ProductResponse(product.Name, product.Category.Name, product.Description, product.HasStock, product.Active);
+            var result = new ProductResponse(product.Name, product.Category.Name, product.Description, product.HasStock, product.Price, product.Active);
 
             return Results.Ok(result);
         }
