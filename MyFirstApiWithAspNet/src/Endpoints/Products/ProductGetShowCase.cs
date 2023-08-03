@@ -7,20 +7,21 @@ public class ProductGetShowCase
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static async Task<IResult> Action(int? page, int? rows, string? orderBy, ApplicationDbContext context)
+    public static async Task<IResult> Action(ApplicationDbContext context, int page = 1, int row = 10, string orderBy = "name")
     {
-        var errors = ValidateInputPageRows.Validate(page, rows);
-
+        var errors = ValidateInputPageRows.Validate(page, row);
         if (errors.Length > 0)
             return Results.BadRequest(errors);
-        if (string.IsNullOrEmpty(orderBy))
-            orderBy = "name";
 
-        var queryBase = context.Products.Include(p => p.Category).Where(p => p.HasStock && p.Category.Active);
+        var queryBase = context.Products.AsNoTracking().Include(p => p.Category).Where(p => p.HasStock && p.Category.Active);
         if (orderBy == "price")
             queryBase = queryBase.OrderBy(p => p.Price);
+        else if (orderBy == "name")
+            queryBase = queryBase.OrderBy(p => p.Name);
+        else
+            return Results.Problem(title: "Order only by price or name", statusCode: 400);
 
-        var queryFilter = queryBase.Skip((page.Value - 1) * rows.Value).Take(rows.Value);
+        var queryFilter = queryBase.Skip((page - 1) * row).Take(row);
 
         var products = await queryFilter.ToListAsync();
 

@@ -5,6 +5,8 @@ using MyFirstApiWithAspNet.Endpoints.Security;
 using System.Text;
 using Serilog;
 using MyFirstApiWithAspNet.Endpoints.Products;
+using MyFirstApiWithAspNet.Endpoints.Clients;
+using MyFirstApiWithAspNet.Domain.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,7 @@ builder.Services.AddSqlServer<ApplicationDbContext>(connectionString);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<QueryAllUsersWithClaimName>();
+builder.Services.AddScoped<UserCreator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization(option =>
@@ -71,6 +74,7 @@ app.MapMethods(ProductGetShowCase.Template, ProductGetShowCase.Methods, ProductG
 app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handle);
 app.MapMethods(ProductGet.Template, ProductGet.Methods, ProductGet.Handle);
 app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handle);
+app.MapMethods(ClientPost.Template, ClientPost.Methods, ClientPost.Handle);
 app.MapMethods(CategoryGetAll.Template, CategoryGetAll.Methods, CategoryGetAll.Handle);
 app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
