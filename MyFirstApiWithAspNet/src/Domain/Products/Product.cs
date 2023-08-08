@@ -1,4 +1,5 @@
 ﻿using Flunt.Validations;
+using MyFirstApiWithAspNet.Domain.Orders;
 
 namespace MyFirstApiWithAspNet.Domain.Products;
 
@@ -11,6 +12,7 @@ public class Product : Entity
     public bool HasStock { get; private set; }
     public decimal Price { get; private set; }
     public bool Active { get; private set; } = true;
+    public ICollection<Order> Orders { get; internal set; }
 
     private Product() { }
 

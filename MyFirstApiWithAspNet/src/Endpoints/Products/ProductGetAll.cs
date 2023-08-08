@@ -16,7 +16,7 @@ public class ProductGetAll
         .OrderBy(p => p.Name)
         .ToListAsync();
 
-        var results = products.Select(p => new ProductResponse(p.Name, p.Category.Name, p.Description, p.HasStock, p.Price, p.Active));
+        var results = products.Select(p => new ProductResponse(p.Id, p.Name, p.Category.Name, p.Description, p.HasStock, p.Price, p.Active));
 
         return Results.Ok(results);
     }
