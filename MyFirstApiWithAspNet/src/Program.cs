@@ -76,7 +76,7 @@ app.UseAuthorization();
 app.MapMethods(ProductGetShowCase.Template, ProductGetShowCase.Methods, ProductGetShowCase.Handle);
 app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handle);
 app.MapMethods(ProductGet.Template, ProductGet.Methods, ProductGet.Handle);
-app.MapMethods(OrderGet.Template, OrderGet.Methods, OrderGet.Handle);
+app.MapMethods(OrderGetAll.Template, OrderGetAll.Methods, OrderGetAll.Handle);
 app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handle);
 app.MapMethods(ClientPost.Template, ClientPost.Methods, ClientPost.Handle);
 app.MapMethods(ClientGet.Template, ClientGet.Methods, ClientGet.Handle);

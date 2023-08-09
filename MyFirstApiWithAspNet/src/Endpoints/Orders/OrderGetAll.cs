@@ -1,23 +1,51 @@
 ﻿namespace MyFirstApiWithAspNet.Endpoints.Oders;
 
-public class OrderGet
+public class OrderGetAll
 {
     public static string Template => "/orders";
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
-    public static async Task<IResult> Action(ApplicationDbContext context, HttpContext http)
+    public static async Task<IResult> Action(ApplicationDbContext context, HttpContext http, int page = 1, int row = 10)
     {
-        var clientIdClaim = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var errors = ValidateInputPageRows.Validate(page, row);
+        if (errors.Length > 0)
+            return Results.BadRequest(errors);
 
-        string clientCpfClaim = null;
+        var employeeClaim = http.User.Claims.FirstOrDefault(c => c.Type == "EmployeeCode");
 
-        var cpfClaim = http.User.Claims.FirstOrDefault(c => c.Type == "Cpf");
-
-        if (cpfClaim != null)
+        if (employeeClaim == null)
         {
-            clientCpfClaim = cpfClaim.Value;
+            return Results.Problem
+                (title: "Forbid: You do not have the necessary role to access this resource.", statusCode: 403);
         }
+        else
+        {
+            List<OrderResponse> orderResponses;
+            orderResponses = await context.Orders
+            .Where(order => order.Products.Any())
+            .Join(context.Users,
+                order => order.ClientId,
+                user => user.Id,
+                (order, user) => new OrderResponse(
+                    order.Id,
+                    user.UserName,
+                    order.DeliveryAddress,
+                    order.Products.Select(p => p.Name).ToList(),
+                    order.Total))
+            .Skip((page - 1) * row)
+            .Take(row)
+            .ToListAsync();
+            return Results.Ok(orderResponses);
+        }
+    }
+}
+
+
+
+
+        /*var clientIdClaim = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var clientCpfClaim = http.User.Claims.FirstOrDefault(c => c.Type == "Cpf").Value;
 
         List<OrderResponse> orderResponses;
 
@@ -53,6 +81,4 @@ public class OrderGet
         }
 
         return Results.Ok(orderResponses);
-    }
-
-}
+    }*/
