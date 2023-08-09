@@ -8,6 +8,7 @@ using MyFirstApiWithAspNet.Endpoints.Products;
 using MyFirstApiWithAspNet.Endpoints.Clients;
 using MyFirstApiWithAspNet.Domain.Users;
 using MyFirstApiWithAspNet.Endpoints.Oders;
+using MyFirstApiWithAspNet.Endpoints.Reports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddSqlServer<ApplicationDbContext>(connectionString);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<QueryAllUsersWithClaimName>();
+builder.Services.AddScoped<QueryBestSellingProduct>();
 builder.Services.AddScoped<UserCreator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -74,9 +76,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapMethods(ProductGetShowCase.Template, ProductGetShowCase.Methods, ProductGetShowCase.Handle);
+app.MapMethods(BestSellingProductReportGet.Template, BestSellingProductReportGet.Methods, BestSellingProductReportGet.Handle);
 app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handle);
 app.MapMethods(ProductGet.Template, ProductGet.Methods, ProductGet.Handle);
 app.MapMethods(OrderGetAll.Template, OrderGetAll.Methods, OrderGetAll.Handle);
+app.MapMethods(OrderGet.Template, OrderGet.Methods, OrderGet.Handle);
 app.MapMethods(CategoryPost.Template, CategoryPost.Methods, CategoryPost.Handle);
 app.MapMethods(ClientPost.Template, ClientPost.Methods, ClientPost.Handle);
 app.MapMethods(ClientGet.Template, ClientGet.Methods, ClientGet.Handle);
